@@ -1,0 +1,5 @@
+#dependencies
+/node_modules/
+
+# config files of Jetbrain's IDE
+/.idea/
