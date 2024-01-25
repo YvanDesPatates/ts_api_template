@@ -5,7 +5,8 @@ module.exports = {
     },
     "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:jest/recommended"
     ],
     "overrides": [
         {
@@ -29,5 +30,9 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
+        semi: ['error', 'never'], // Disallows semicolons at the ends of statements
+        camelcase: 2, // Enforces camel case naming convention
+        "arrow-body-style": 2, // Enforces consistent style for arrow functions
+        "prefer-const": 2, // Recommends use of const over let
     }
 }
