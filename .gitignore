@@ -4,3 +4,5 @@
 /.idea/
 # output files for production, transpiled ts files
 /dist/
+# environnement variables
+.env
