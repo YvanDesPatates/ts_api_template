@@ -1,5 +1,6 @@
 import express, {Router} from "express";
 import {AccountController} from "./AccountController";
+import {asyncWrapper} from "../Errors/asyncWrapperErrorCatchingMiddleware";
 
 export class AccountRoute {
     private readonly router: Router = express.Router();
@@ -16,25 +17,25 @@ export class AccountRoute {
     }
 
     private routes(): void {
+
         this.router.get(
             "/",
-            this.accountController.getAllAccounts.bind(this.accountController)
-        );
+            asyncWrapper(this.accountController.getAllAccounts, this.accountController));
 
         this.router.get(
             '/:id',
-            this.accountController.getAccountById.bind(this.accountController));
+            asyncWrapper(this.accountController.getAccountById, this.accountController));
 
         this.router.post(
             '/',
-            this.accountController.createAccount.bind(this.accountController));
+            asyncWrapper(this.accountController.createAccount, this.accountController));
 
         this.router.put(
             '/:id',
-            this.accountController.updateAccount.bind(this.accountController));
+            asyncWrapper(this.accountController.updateAccount, this.accountController));
 
         this.router.delete(
             '/:id',
-            this.accountController.deleteAccount.bind(this.accountController));
+            asyncWrapper(this.accountController.deleteAccount, this.accountController));
     }
 }
