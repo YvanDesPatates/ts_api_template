@@ -1,5 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import {Account} from "./Account";
+import {DisplayableJsonError} from "../Errors/DisplayableJsonError";
 
 export class AccountController {
 
@@ -14,7 +15,7 @@ export class AccountController {
     public async getAccountById(req: Request, res: Response, next: NextFunction): Promise<void> {
             const id = Number(req.params.id);
             if (!id) {
-                throw new Error("error 400 - missing required param : id")
+                throw new DisplayableJsonError(400, "missing required param : id");
             }
             const account =
                 {
