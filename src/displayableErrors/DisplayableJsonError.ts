@@ -11,6 +11,6 @@ export class DisplayableJsonError extends Error {
             title: "error",
             status: this.statusCode,
             message: this.message
-        }
+        };
     }
 }

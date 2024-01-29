@@ -1,6 +1,6 @@
 import express, {Router} from "express";
 import {AccountController} from "./AccountController";
-import {asyncWrapper} from "../Errors/asyncWrapperErrorCatchingMiddleware";
+import {asyncWrapper} from "../displayableErrors/asyncWrapperErrorCatchingMiddleware";
 
 export class AccountRoute {
     private readonly router: Router = express.Router();

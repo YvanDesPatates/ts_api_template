@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import {AccountRoute} from "./account/AccountRoute";
-import {errorHandler} from "./Errors/ErrorHandler";
+import {errorHandler} from "./displayableErrors/ErrorHandler";
 
 dotenv.config();
 const port = process.env.PORT;

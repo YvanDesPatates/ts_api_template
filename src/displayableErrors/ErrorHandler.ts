@@ -8,6 +8,6 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
         res.status(err.statusCode).send(err.toJSON());
         return;
     }
-    const displayableError = new DisplayableJsonError(500, "unexpected internal error")
+    const displayableError = new DisplayableJsonError(500, "unexpected internal error");
     res.status(500).send(displayableError.toJSON());
 };
