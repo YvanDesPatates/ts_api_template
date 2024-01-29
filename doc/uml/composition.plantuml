@@ -1,0 +1,18 @@
+@startuml
+interface Account {
+id: string
+mdp: string
+name: string
+
+save()
+{static} getAll()
+}
+
+class accountDAO {
+createAccount(account)
+}
+
+Account -up-> accountDAO: createAccount()
+accountController -up-> Account: save()
+accountController -up-> Account: create
+@enduml
