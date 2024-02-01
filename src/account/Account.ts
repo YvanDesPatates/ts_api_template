@@ -1,26 +1,59 @@
 import {assertAttributeExists, assertAttributeType_number} from "../util/attribute_assertions";
+import {DisplayableJsonError} from "../displayableErrors/DisplayableJsonError";
 
 export class Account {
-    private email: string;
-    private name: string;
-    private amount?: number;
-    private pwd?: string;
+    private _email: string;
+    private _name: string;
+    private _amount: number;
+    private _pwd?: string;
 
 
-    public constructor(uniqueEmail: string, name: string, amount?: number, pwd?: string) {
+    public constructor(uniqueEmail: string, name: string, amount: number, pwd?: string) {
         assertAttributeExists(uniqueEmail, "email");
         assertAttributeExists(name, "name");
         assertAttributeType_number(amount, "amount");
+        if (pwd && pwd.trim().length === 0){
+            throw new DisplayableJsonError(400, "pwd cannot be blank")
+        }
 
-        this.email = uniqueEmail;
-        this.name = name;
-        this.amount = amount;
-        this.pwd = pwd;
+        this._email = uniqueEmail;
+        this._name = name;
+        this._amount = amount;
+        this._pwd = pwd;
     }
 
-    public getCopyWithoutPwd(): Account{
-        return new Account(this.email, this.name, this.amount);
+    public getDisplayableCopy(): Account{
+        return new Account(this._email, this._name, this._amount);
     }
 
+    public create(): Account{
+        //assert email is unique thanks to DAO - todo
+        assertAttributeExists(this._pwd, "pwd")
+        return this
+    }
 
+    public update(actualEmail: string): Account{
+        //assert actualEmail account exists thanks to DAO - todo
+        return this
+    }
+
+    public static getAccount(email: string): Account{
+        return new Account(email, "name_of"+email, 5, "pwd")
+    }
+
+    get email(): string {
+        return this._email;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    get amount(): number {
+        return this._amount;
+    }
+
+    get pwd(): string | undefined {
+        return this._pwd;
+    }
 }
