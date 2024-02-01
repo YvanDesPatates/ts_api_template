@@ -23,7 +23,7 @@ export class AccountRoute {
             asyncWrapper(this.accountController.getAllAccounts, this.accountController));
 
         this.router.get(
-            '/:id',
+            '/:email',
             asyncWrapper(this.accountController.getAccountById, this.accountController));
 
         this.router.post(
@@ -31,11 +31,11 @@ export class AccountRoute {
             asyncWrapper(this.accountController.createAccount, this.accountController));
 
         this.router.put(
-            '/:id',
+            '/:email',
             asyncWrapper(this.accountController.updateAccount, this.accountController));
 
         this.router.delete(
-            '/:id',
+            '/:email',
             asyncWrapper(this.accountController.deleteAccount, this.accountController));
     }
 }
