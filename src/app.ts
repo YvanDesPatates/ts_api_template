@@ -7,10 +7,7 @@ dotenv.config();
 const port = process.env.PORT;
 const app = express();
 
-const accountRoute = new AccountRoute();
-
-app.use('/api/accounts', accountRoute.getRouter());
-
+// adding body parsing middleware to extract the payload of the request
 app.use(express.json());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -18,6 +15,10 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });
+
+const accountRoute = new AccountRoute();
+
+app.use('/api/accounts', accountRoute.getRouter());
 
 app.get('/', (req, res) => {
   res?.send('Hello World!');
