@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import {AccountRoute} from "./account/AccountRoute";
 import {errorHandler} from "./displayableErrors/ErrorHandler";
 
@@ -9,12 +10,7 @@ const app = express();
 
 // adding body parsing middleware to extract the payload of the request
 app.use(express.json());
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+app.use(cors());
 
 const accountRoute = new AccountRoute();
 
