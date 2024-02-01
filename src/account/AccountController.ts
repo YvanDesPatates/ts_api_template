@@ -1,6 +1,5 @@
 import {NextFunction, Request, Response} from "express";
 import {Account} from "./Account";
-import {MissingAttributeError} from "../displayableErrors/MissingAttributeError";
 
 export class AccountController {
 
