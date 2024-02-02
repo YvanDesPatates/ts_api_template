@@ -22,6 +22,7 @@ export class Account {
         this._pwd = pwd;
     }
 
+    //#region public methods
     public getDisplayableCopy(): Account{
         return new Account(this._email, this._name, this._amount);
     }
@@ -36,11 +37,22 @@ export class Account {
         //assert actualEmail account exists thanks to DAO - todo
         return this
     }
+    //#endregion
 
+    //#region static methods
     public static getAccount(email: string): Account{
         return new Account(email, "name_of"+email, 5, "pwd")
     }
 
+    static getAll(): Account[] {
+        return [
+            new Account("account_1", "2", 5),
+            new Account("account_2", "2", 5)
+        ];
+    }
+    //#endregion
+
+    //#region getters
     get email(): string {
         return this._email;
     }
@@ -56,4 +68,6 @@ export class Account {
     get pwd(): string | undefined {
         return this._pwd;
     }
+    //#endregion
+
 }
