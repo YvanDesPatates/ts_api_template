@@ -1,28 +1,28 @@
 import {NextFunction, Request, Response} from "express";
-import {Account} from "./Account";
+import {AccountModel} from "./AccountModel";
 
 export class AccountController {
 
     public async getAllAccounts(req: Request, res: Response, next: NextFunction): Promise<void> {
-        const accounts: Account[] = Account.getAll();
+        const accounts: AccountModel[] = AccountModel.getAll();
         res.status(200).json(accounts);
     }
 
     public async getAccountById(req: Request, res: Response, next: NextFunction): Promise<void> {
         const email = req.params.email;
-        const account: Account = Account.getAccount(email).getDisplayableCopy();
+        const account: AccountModel = AccountModel.getAccount(email).getDisplayableCopy();
         res.status(200).json(account);
     }
 
     public async createAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
-        const accountToCreate: Account = new Account(req.body.email, req.body.name, req.body.amount, req.body.pwd);
+        const accountToCreate: AccountModel = new AccountModel(req.body.email, req.body.name, req.body.amount, req.body.pwd);
         res.status(201).json(accountToCreate.create().getDisplayableCopy());
     }
 
     public async updateAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
         const actualEmail:string = req.params.email;
-        const accountToUpdate: Account = Account.getAccount(actualEmail);
-        const updatedAccount: Account = new Account(
+        const accountToUpdate: AccountModel = AccountModel.getAccount(actualEmail);
+        const updatedAccount: AccountModel = new AccountModel(
             req.body.email ?? accountToUpdate.email,
             req.body.name ?? accountToUpdate.name,
             req.body.amount ?? accountToUpdate.amount,
@@ -34,7 +34,7 @@ export class AccountController {
 
     public async deleteAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
         const email = req.params.email;
-        const account: Account = new Account(email, email, 5);
+        const account: AccountModel = new AccountModel(email, email, 5);
         account.delete();
         res.status(200).json(account.getDisplayableCopy());
     }

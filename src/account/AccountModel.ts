@@ -1,7 +1,8 @@
 import {assertAttributeExists, assertAttributeType_number} from "../util/attribute_assertions";
 import {DisplayableJsonError} from "../displayableErrors/DisplayableJsonError";
+import {ModelInterface} from "../ModelInterface";
 
-export class Account {
+export class AccountModel implements ModelInterface{
     private _email: string;
     private _name: string;
     private _amount: number;
@@ -22,18 +23,19 @@ export class Account {
         this._pwd = pwd;
     }
 
+
     //#region public methods
-    public getDisplayableCopy(): Account{
-        return new Account(this._email, this._name, this._amount);
+    public getDisplayableCopy(): AccountModel{
+        return new AccountModel(this._email, this._name, this._amount);
     }
 
-    public create(): Account{
+    public create(): AccountModel{
         //assert email is unique thanks to DAO - todo
         assertAttributeExists(this._pwd, "pwd")
         return this
     }
 
-    public update(actualEmail: string): Account{
+    public update(actualEmail: string): AccountModel{
         //assert actualEmail account exists thanks to DAO - todo
         return this
     }
@@ -44,14 +46,14 @@ export class Account {
     //#endregion
 
     //#region static methods
-    public static getAccount(email: string): Account{
-        return new Account(email, "name_of"+email, 5, "pwd")
+    public static getAccount(email: string): AccountModel{
+        return new AccountModel(email, "name_of"+email, 5, "pwd")
     }
 
-    static getAll(): Account[] {
+    static getAll(): AccountModel[] {
         return [
-            new Account("account_1", "2", 5),
-            new Account("account_2", "2", 5)
+            new AccountModel("account_1", "2", 5),
+            new AccountModel("account_2", "2", 5)
         ];
     }
     //#endregion
