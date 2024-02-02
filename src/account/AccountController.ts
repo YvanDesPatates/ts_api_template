@@ -34,9 +34,9 @@ export class AccountController {
 
     public async deleteAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
         const email = req.params.email;
-
-        const account: Account = new Account(email, email, 5).getDisplayableCopy();
-        res.status(200).json(account);
+        const account: Account = new Account(email, email, 5);
+        account.delete();
+        res.status(200).json(account.getDisplayableCopy());
     }
 
 }

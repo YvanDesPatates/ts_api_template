@@ -37,6 +37,10 @@ export class Account {
         //assert actualEmail account exists thanks to DAO - todo
         return this
     }
+
+    public delete() {
+        //todo
+    }
     //#endregion
 
     //#region static methods
@@ -69,5 +73,4 @@ export class Account {
         return this._pwd;
     }
     //#endregion
-
 }
