@@ -1,7 +1,8 @@
 import * as fs from "fs";
 import {DisplayableJsonError} from "./displayableErrors/DisplayableJsonError";
+import {DAOInterface} from "./DAOInterface";
 
-export abstract class JsonDAO<T> {
+export abstract class JsonDAO<T> implements DAOInterface<T>{
     private commonPath: string = "data/";
 
     //create file and data repository if not exists
@@ -14,7 +15,9 @@ export abstract class JsonDAO<T> {
         }
     }
 
-    abstract getFileName(): string;
+    protected abstract getFileName(): string;
+
+    //#region public methods
     public getAll(): T[] {
         try {
             let result =  fs.readFileSync(this.getFileName(), 'utf8');
@@ -40,5 +43,15 @@ export abstract class JsonDAO<T> {
     private getFilePath(): string {
         return this.commonPath + this.getFileName();
     }
+
+    public update(id: string, newElement: T): T {
+        //todo
+        return newElement;
+    }
+
+    public delete(id: string): void {
+        //todo
+    }
+    //#endregion
 
 }
