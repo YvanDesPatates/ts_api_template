@@ -1,6 +1,7 @@
 import {assertAttributeExists, assertAttributeType_number} from "../util/attribute_assertions";
 import {DisplayableJsonError} from "../displayableErrors/DisplayableJsonError";
 import {ModelInterface} from "../ModelInterface";
+import {AccountJsonDAO} from "./accountJsonDAO";
 
 export class AccountModel implements ModelInterface{
     private _email: string;
@@ -32,7 +33,7 @@ export class AccountModel implements ModelInterface{
     public create(): AccountModel{
         //assert email is unique thanks to DAO - todo
         assertAttributeExists(this._pwd, "pwd")
-        return this
+        return new AccountJsonDAO().create(this)
     }
 
     public update(actualEmail: string): AccountModel{
