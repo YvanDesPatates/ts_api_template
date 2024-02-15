@@ -21,7 +21,7 @@ export abstract class JsonDAO<T> {
             return JSON.parse(result);
         } catch (err) {
             if (err instanceof SyntaxError){
-                throw new DisplayableJsonError(500, "Database error : Error parsing file, check file integrity, your data may be corrupted");
+                throw new DisplayableJsonError(500, "Database error : Error parsing file, check file integrity, your data may not follow a correct Json Syntax");
             }
             throw new DisplayableJsonError(500, "Database error : Error reading file");
         }
