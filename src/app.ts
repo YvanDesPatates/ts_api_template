@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import {AccountRoute} from "./account/AccountRoute";
-import {errorHandler} from "./displayableErrors/ErrorHandler";
+import {errorHandlerMiddleware} from "./displayableErrors/ErrorHandlerMiddleware";
 import {ParsingResponseBodyMiddleware} from "./ParsingResponseBodyMiddleware";
 
 dotenv.config();
@@ -13,6 +13,7 @@ const app = express();
 app.use(express.json());
 // middleware to allow CORS
 app.use(cors());
+app.use(ParsingResponseBodyMiddleware)
 
 const accountRoute = new AccountRoute();
 
@@ -22,8 +23,7 @@ app.get('/', (req, res) => {
   res?.send('Hello World!');
 });
 
-app.use(ParsingResponseBodyMiddleware)
-app.use(errorHandler);
+app.use(errorHandlerMiddleware);
 app.listen(port, () => {
   console.log(`Express is listening at http://localhost:${port}`);
 });
