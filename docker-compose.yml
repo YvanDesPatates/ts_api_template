@@ -1,0 +1,9 @@
+version: "1.0"
+services :
+  api:
+    build : .
+    container_name : api_template
+    env_file:
+      - .env
+    ports:
+      - ${PORT}:${PORT}
