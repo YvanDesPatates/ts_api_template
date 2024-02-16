@@ -10,13 +10,13 @@ export class AccountController {
 
     public async getAccountById(req: Request, res: Response, next: NextFunction): Promise<void> {
         const email = req.params.email;
-        const account: AccountModel = AccountModel.getAccount(email).getDisplayableCopy();
+        const account: AccountModel = AccountModel.getAccount(email);
         res.status(200).json(account);
     }
 
     public async createAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
         const accountToCreate: AccountModel = new AccountModel(req.body.email, req.body.name, req.body.amount, req.body.pwd);
-        res.status(201).json(accountToCreate.create().getDisplayableCopy());
+        res.status(201).json(accountToCreate.create());
     }
 
     public async updateAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -29,14 +29,14 @@ export class AccountController {
             req.body.pwd ?? accountToUpdate.pwd
         )
         updatedAccount.update(actualEmail)
-        res.status(200).json(updatedAccount.getDisplayableCopy());
+        res.status(200).json(updatedAccount);
     }
 
     public async deleteAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
         const email = req.params.email;
         const account: AccountModel = new AccountModel(email, email, 5);
         account.delete();
-        res.status(200).json(account.getDisplayableCopy());
+        res.status(200).json(account);
     }
 
 }
