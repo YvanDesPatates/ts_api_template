@@ -33,5 +33,6 @@ module.exports = {
         camelcase: 1, // Warning for camel case naming convention
         "arrow-body-style": 2, // Enforces consistent style for arrow functions
         "prefer-const": 2, // Recommends use of const over let
+        "@typescript-eslint/no-explicit-any": 1 //Only at warning because any is usefull when parsing body, you never know what type you have before checked
     }
 }

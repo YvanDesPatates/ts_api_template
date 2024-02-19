@@ -8,7 +8,7 @@ export const ParsingResponseBodyMiddleware = (req: Request, res: Response, next:
     const originalJsonFunction = res.json;
     res.json = function (data): Response {
         if (Array.isArray(data)){
-            data = data.map((element: any) => getDisplayableCopyIfInstanceOfModelInterface(element));
+            data = data.map((element: object) => getDisplayableCopyIfInstanceOfModelInterface(element));
         }
         data = getDisplayableCopyIfInstanceOfModelInterface(data);
         return originalJsonFunction.call(this, data);
@@ -21,7 +21,7 @@ export const ParsingResponseBodyMiddleware = (req: Request, res: Response, next:
 /**
  * This function return displayable copy of the object if it is a ModelInterface implementation.
  */
-function getDisplayableCopyIfInstanceOfModelInterface(object: any) {
+function getDisplayableCopyIfInstanceOfModelInterface(object: object) {
     if (isInstanceOfModelinterface(object)) {
         return  object.getDisplayableCopy();
     }

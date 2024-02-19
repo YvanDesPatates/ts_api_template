@@ -5,7 +5,7 @@ export interface ModelInterface {
     getDisplayableCopy(): ModelInterface
 }
 
-export function isInstanceOfModelinterface(object: any): object is ModelInterface {
+export function isInstanceOfModelinterface(object: object): object is ModelInterface {
     if (object === null || object === undefined) { return false; }
     if (typeof object !== 'object') { return false; }
     if ( Array.isArray(object) ) { return false; }
