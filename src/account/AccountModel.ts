@@ -15,7 +15,7 @@ export class AccountModel implements ModelInterface{
         assertAttributeExists(name, "name");
         assertAttributeType_number(amount, "amount");
         if (pwd && pwd.trim().length === 0){
-            throw new DisplayableJsonError(400, "pwd cannot be blank")
+            throw new DisplayableJsonError(400, "pwd cannot be blank");
         }
 
         this._email = uniqueEmail;
@@ -32,13 +32,13 @@ export class AccountModel implements ModelInterface{
 
     public create(): AccountModel{
         //assert email is unique thanks to DAO - todo
-        assertAttributeExists(this._pwd, "pwd")
-        return new AccountJsonDAO().create(this)
+        assertAttributeExists(this._pwd, "pwd");
+        return new AccountJsonDAO().create(this);
     }
 
     public update(actualEmail: string): AccountModel{
         //assert actualEmail account exists thanks to DAO - todo
-        return this
+        return this;
     }
 
     public delete() {
@@ -48,7 +48,7 @@ export class AccountModel implements ModelInterface{
 
     //#region static methods
     public static getAccount(email: string): AccountModel{
-        return new AccountModel(email, "name_of"+email, 5, "pwd")
+        return new AccountModel(email, "name_of"+email, 5, "pwd");
     }
 
     static getAll(): AccountModel[] {

@@ -20,7 +20,7 @@ export abstract class JsonDAO<T> implements DAOInterface<T>{
     //#region public methods
     public getAll(): T[] {
         try {
-            let result =  fs.readFileSync(this.getFileName(), 'utf8');
+            const result =  fs.readFileSync(this.getFileName(), 'utf8');
             return JSON.parse(result);
         } catch (err) {
             if (err instanceof SyntaxError){

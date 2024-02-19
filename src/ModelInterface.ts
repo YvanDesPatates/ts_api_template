@@ -6,9 +6,9 @@ export interface ModelInterface {
 }
 
 export function isInstanceOfModelinterface(object: any): object is ModelInterface {
-    if (object === null || object === undefined) { return false }
-    if (typeof object !== 'object') { return false }
-    if ( Array.isArray(object) ) { return false }
-    const hasDisplayableCopyMethod: boolean = ( 'getDisplayableCopy' in object && typeof object.getDisplayableCopy === 'function')
-    return hasDisplayableCopyMethod
+    if (object === null || object === undefined) { return false; }
+    if (typeof object !== 'object') { return false; }
+    if ( Array.isArray(object) ) { return false; }
+    const hasDisplayableCopyMethod: boolean = ( 'getDisplayableCopy' in object && typeof object.getDisplayableCopy === 'function');
+    return hasDisplayableCopyMethod;
 }

@@ -3,12 +3,12 @@ import {UnexpectedAttributeTypeError} from "../displayableErrors/UnexpectedAttri
 
 export function assertAttributeExists(attribute: any, attributeName: string){
     if (!attribute){
-        throw new MissingAttributeError(attributeName)
+        throw new MissingAttributeError(attributeName);
     }
 }
 
 export function assertAttributeType_number(attribute: any, attributeName: string): void{
     if ( typeof attribute !== "number"){
-        throw new UnexpectedAttributeTypeError(attributeName, "number")
+        throw new UnexpectedAttributeTypeError(attributeName, "number");
     }
 }

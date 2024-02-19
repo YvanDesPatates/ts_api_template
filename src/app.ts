@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 // middleware to allow CORS
 app.use(cors());
-app.use(ParsingResponseBodyMiddleware)
+app.use(ParsingResponseBodyMiddleware);
 
 const accountRoute = new AccountRoute();
 

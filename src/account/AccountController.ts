@@ -27,8 +27,8 @@ export class AccountController {
             req.body.name ?? accountToUpdate.name,
             req.body.amount ?? accountToUpdate.amount,
             req.body.pwd ?? accountToUpdate.pwd
-        )
-        updatedAccount.update(actualEmail)
+        );
+        updatedAccount.update(actualEmail);
         res.status(200).json(updatedAccount);
     }
 
