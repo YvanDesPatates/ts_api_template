@@ -13,6 +13,7 @@ export class AccountModel implements ModelInterface{
     public constructor(uniqueEmail: string, name: string, amount: number, pwd?: string) {
         assertAttributeExists(uniqueEmail, "email");
         assertAttributeExists(name, "name");
+        assertAttributeExists(amount, "amount");
         assertAttributeType_number(amount, "amount");
         if (pwd && pwd.trim().length === 0){
             throw new DisplayableJsonError(400, "pwd cannot be blank");
@@ -52,10 +53,7 @@ export class AccountModel implements ModelInterface{
     }
 
     static getAll(): AccountModel[] {
-        return [
-            new AccountModel("account_1", "2", 5),
-            new AccountModel("account_2", "2", 5)
-        ];
+        return new AccountJsonDAO().getAll();
     }
     //#endregion
 
