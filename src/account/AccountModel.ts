@@ -2,12 +2,15 @@ import {assertAttributeExists, assertAttributeType_number} from "../util/attribu
 import {DisplayableJsonError} from "../displayableErrors/DisplayableJsonError";
 import {ModelInterface} from "../ModelInterface";
 import {AccountJsonDAO} from "./accountJsonDAO";
+import {DisplayableAccount} from "./DisplayableAccount";
 
 export class AccountModel implements ModelInterface{
     private _email: string;
     private _name: string;
     private _amount: number;
     private _pwd?: string;
+
+    private _accountJsonDAO: AccountJsonDAO = new AccountJsonDAO();
 
 
     public constructor(uniqueEmail: string, name: string, amount: number, pwd?: string) {
@@ -27,33 +30,61 @@ export class AccountModel implements ModelInterface{
 
 
     //#region public methods
-    public getDisplayableCopy(): AccountModel{
-        return new AccountModel(this._email, this._name, this._amount);
+    public getDisplayableCopy(): DisplayableAccount{
+        return new DisplayableAccount(this);
     }
 
+    /**
+     * Even if it's not required to construct an account object, pwd is required to save it in database
+     */
     public create(): AccountModel{
-        //assert email is unique thanks to DAO - todo
         assertAttributeExists(this._pwd, "pwd");
-        return new AccountJsonDAO().create(this);
+        this.assertEmailDoesNotExistsInDatabase(this._email);
+        return this._accountJsonDAO.create(this);
     }
 
+    /**
+     * Update the account by deleting the old one and creating a new one, pwd field is required.
+     * @param actualEmail is the email of the account to update, after the update the email could be different
+     */
     public update(actualEmail: string): AccountModel{
-        //assert actualEmail account exists thanks to DAO - todo
-        return this;
+        AccountModel.assertEmailExistsInDatabase(this._accountJsonDAO, actualEmail);
+        this._accountJsonDAO.delete(actualEmail);
+        return this.create();
     }
 
-    public delete() {
-        //todo
+    public delete(): void{
+        AccountModel.assertEmailExistsInDatabase(this._accountJsonDAO, this._email);
+        if ( ! this._accountJsonDAO.delete(this._email) ){
+            throw new DisplayableJsonError(500, "Error when deleting account");
+        }
     }
     //#endregion
 
     //#region static methods
     public static getAccount(email: string): AccountModel{
-        return new AccountModel(email, "name_of"+email, 5, "pwd");
+        AccountModel.assertEmailExistsInDatabase(new AccountJsonDAO(), email);
+        const account = new AccountJsonDAO().getById(email);
+        if ( ! account){ throw new DisplayableJsonError(500, "Error when getting account"); }
+        return account;
     }
 
     static getAll(): AccountModel[] {
         return new AccountJsonDAO().getAll();
+    }
+    //#endregion
+
+    //#region private methods
+    private assertEmailDoesNotExistsInDatabase(email: string): void{
+        if (this._accountJsonDAO.idExists(email)){
+            throw new DisplayableJsonError(409, "Account already exists with email " + email);
+        }
+    }
+
+    private static assertEmailExistsInDatabase(accountDAO: AccountJsonDAO, email: string): void{
+        if ( ! accountDAO.idExists(email)){
+            throw new DisplayableJsonError(404, "Account not found with the email " + email);
+        }
     }
     //#endregion
 

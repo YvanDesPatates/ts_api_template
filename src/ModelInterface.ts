@@ -1,8 +1,10 @@
+import {DisplayableInterface} from "./DisplayableInterface";
+
 /**
  * interface of all models used to automatically apply `getDisplayableCopy` when parsing the response body
  */
 export interface ModelInterface {
-    getDisplayableCopy(): ModelInterface
+    getDisplayableCopy(): DisplayableInterface
 }
 
 export function isInstanceOfModelinterface(object: object): object is ModelInterface {

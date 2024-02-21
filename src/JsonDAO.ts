@@ -32,11 +32,8 @@ export abstract class JsonDAO<T> implements DAOInterface<T>{
         }
     }
 
-    public getById(id: string): T {
-        let elements = this.getAll();
-        const element = elements.find((element) => {return this.compareElementToId(element, id)});
-        if (!element){ throw new DisplayableJsonError(404, "Element not found"); }
-        return element;
+    public getById(id: string): T | null{
+        return this.searchElementThrowExceptionIfNotFound(this.getAll(), id);
     }
 
     public create(newElement: T): T {
@@ -46,18 +43,35 @@ export abstract class JsonDAO<T> implements DAOInterface<T>{
         return newElement;
     }
 
+    public delete(id: string): boolean {
+        let elements = this.getAll();
+        const element = this.searchElementThrowExceptionIfNotFound(elements, id);
+        if (!element){ return false; }
+
+        const indexToDelete = elements.indexOf(element);
+        elements.splice(indexToDelete, 1);
+        fs.writeFileSync(this.getFilePath(), JSON.stringify(elements));
+        return true;
+    }
+
+    public idExists(id: string): boolean {
+        const elements = this.getAll();
+        return elements.some((element) => {return this.compareElementToId(element, id)});
+    }
+    //#endregion
+
+    //#region private methods
     private getFilePath(): string {
         return this.commonPath + this.getFileName();
     }
 
-    public update(id: string, newElement: T): T {
-        //todo
-        return newElement;
-    }
-
-    public delete(id: string): void {
-        //todo
+    private searchElementThrowExceptionIfNotFound(elements: T[], id: string): T | null{
+        const element = elements.find((element) => {return this.compareElementToId(element, id)});
+        if (!element){ return null; }
+        return element;
     }
     //#endregion
+
+
 
 }
