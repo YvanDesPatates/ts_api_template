@@ -5,5 +5,7 @@ services :
     container_name : api_template
     env_file:
       - .env
+    volumes:
+      - ./data:/app/data
     ports:
       - ${PORT}:${PORT}

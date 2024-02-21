@@ -1,7 +1,11 @@
 .dockerignore
 /doc/
 /dist/
+# exclude data beceause it is already mapped with a volume
+/data/
 Dockerfile
+docker-compose.yml
 .gitignore
 README.md
 .env
+.env.exemple
