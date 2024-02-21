@@ -17,6 +17,8 @@ export abstract class JsonDAO<T> implements DAOInterface<T>{
 
     protected abstract getFileName(): string;
 
+    protected abstract compareElementToId(element: T, id: string): boolean;
+
     //#region public methods
     public getAll(): T[] {
         try {
@@ -31,8 +33,10 @@ export abstract class JsonDAO<T> implements DAOInterface<T>{
     }
 
     public getById(id: string): T {
-        //todo
-        return new Object() as T;
+        let elements = this.getAll();
+        const element = elements.find((element) => {return this.compareElementToId(element, id)});
+        if (!element){ throw new DisplayableJsonError(404, "Element not found"); }
+        return element;
     }
 
     public create(newElement: T): T {
