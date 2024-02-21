@@ -20,7 +20,7 @@ export abstract class JsonDAO<T> implements DAOInterface<T>{
     //#region public methods
     public getAll(): T[] {
         try {
-            const result =  fs.readFileSync(this.getFileName(), 'utf8');
+            const result =  fs.readFileSync(this.getFilePath(), 'utf8');
             return JSON.parse(result);
         } catch (err) {
             if (err instanceof SyntaxError){
@@ -36,7 +36,9 @@ export abstract class JsonDAO<T> implements DAOInterface<T>{
     }
 
     public create(newElement: T): T {
-        //todo
+        let elements = this.getAll();
+        elements.push(newElement);
+        fs.writeFileSync(this.getFilePath(), JSON.stringify(elements));
         return newElement;
     }
 
