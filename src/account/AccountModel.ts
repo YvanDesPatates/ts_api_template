@@ -2,7 +2,7 @@ import {assertAttributeExists, assertAttributeType_number} from "../util/attribu
 import {DisplayableJsonError} from "../displayableErrors/DisplayableJsonError";
 import {ModelInterface} from "../ModelInterface";
 import {AccountJsonDAO} from "./accountJsonDAO";
-import {DisplayableAccount} from "./DisplayableAccount";
+import {AccountDTO} from "./AccountDTO";
 
 export class AccountModel implements ModelInterface{
     private _email: string;
@@ -30,8 +30,8 @@ export class AccountModel implements ModelInterface{
 
 
     //#region public methods
-    public getDisplayableCopy(): DisplayableAccount{
-        return new DisplayableAccount(this);
+    public getDisplayableCopy(): AccountDTO{
+        return new AccountDTO(this);
     }
 
     /**

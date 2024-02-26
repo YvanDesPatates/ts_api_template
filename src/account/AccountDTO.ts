@@ -1,8 +1,8 @@
-import {DisplayableInterface} from "../DisplayableInterface";
+import {DTOInterface} from "../DTOInterface";
 import {AccountModel} from "./AccountModel";
 import {ModelInterface} from "../ModelInterface";
 
-export class DisplayableAccount extends DisplayableInterface {
+export class AccountDTO extends DTOInterface {
     public email: string = "";
     public name: string = "";
     public amount: number = 0;

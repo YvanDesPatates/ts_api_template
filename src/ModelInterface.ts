@@ -1,10 +1,10 @@
-import {DisplayableInterface} from "./DisplayableInterface";
+import {DTOInterface} from "./DTOInterface";
 
 /**
  * interface of all models used to automatically apply `getDisplayableCopy` when parsing the response body
  */
 export interface ModelInterface {
-    getDisplayableCopy(): DisplayableInterface
+    getDisplayableCopy(): DTOInterface
 }
 
 export function isInstanceOfModelinterface(object: object): object is ModelInterface {
