@@ -1,10 +1,10 @@
 import {assertAttributeExists, assertAttributeType_number} from "../util/attribute_assertions";
 import {DisplayableJsonError} from "../displayableErrors/DisplayableJsonError";
-import {ModelInterface} from "../ModelInterface";
+import {LogicInterface} from "../LogicInterface";
 import {AccountJsonDAO} from "./accountJsonDAO";
 import {AccountDTO} from "./AccountDTO";
 
-export class AccountModel implements ModelInterface{
+export class AccountLogic implements LogicInterface{
     private _email: string;
     private _name: string;
     private _amount: number;
@@ -37,7 +37,7 @@ export class AccountModel implements ModelInterface{
     /**
      * Even if it's not required to construct an account object, pwd is required to save it in database
      */
-    public create(): AccountModel{
+    public create(): AccountLogic{
         assertAttributeExists(this._pwd, "pwd");
         this.assertEmailDoesNotExistsInDatabase(this._email);
         return this._accountJsonDAO.create(this);
@@ -47,14 +47,14 @@ export class AccountModel implements ModelInterface{
      * Update the account by deleting the old one and creating a new one, pwd field is required.
      * @param actualEmail is the email of the account to update, after the update the email could be different
      */
-    public update(actualEmail: string): AccountModel{
-        AccountModel.assertEmailExistsInDatabase(this._accountJsonDAO, actualEmail);
+    public update(actualEmail: string): AccountLogic{
+        AccountLogic.assertEmailExistsInDatabase(this._accountJsonDAO, actualEmail);
         this._accountJsonDAO.delete(actualEmail);
         return this.create();
     }
 
     public delete(): void{
-        AccountModel.assertEmailExistsInDatabase(this._accountJsonDAO, this._email);
+        AccountLogic.assertEmailExistsInDatabase(this._accountJsonDAO, this._email);
         if ( ! this._accountJsonDAO.delete(this._email) ){
             throw new DisplayableJsonError(500, "Error when deleting account");
         }
@@ -62,14 +62,14 @@ export class AccountModel implements ModelInterface{
     //#endregion
 
     //#region static methods
-    public static getAccount(email: string): AccountModel{
-        AccountModel.assertEmailExistsInDatabase(new AccountJsonDAO(), email);
+    public static getAccount(email: string): AccountLogic{
+        AccountLogic.assertEmailExistsInDatabase(new AccountJsonDAO(), email);
         const account = new AccountJsonDAO().getById(email);
         if ( ! account){ throw new DisplayableJsonError(500, "Error when getting account"); }
         return account;
     }
 
-    static getAll(): AccountModel[] {
+    static getAll(): AccountLogic[] {
         return new AccountJsonDAO().getAll();
     }
     //#endregion

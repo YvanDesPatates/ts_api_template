@@ -1,9 +1,9 @@
-import {ModelInterface} from "./ModelInterface";
+import {LogicInterface} from "./LogicInterface";
 
 export abstract class DTOInterface {
-    constructor(objectToDisplay: ModelInterface){
+    constructor(objectToDisplay: LogicInterface){
         this.buildFromObject(objectToDisplay);
     }
 
-    protected abstract buildFromObject(objectToDisplay: ModelInterface): void;
+    protected abstract buildFromObject(objectToDisplay: LogicInterface): void;
 }

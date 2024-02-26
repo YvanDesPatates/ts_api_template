@@ -1,12 +1,12 @@
 import {JsonDAO} from "../JsonDAO";
-import {AccountModel} from "./AccountModel";
+import {AccountLogic} from "./AccountLogic";
 
-export class AccountJsonDAO extends JsonDAO<AccountModel> {
+export class AccountJsonDAO extends JsonDAO<AccountLogic> {
     getFileName(): string {
         return "accounts.json";
     }
 
-    protected compareElementToId(element: AccountModel, id: string): boolean {
+    protected compareElementToId(element: AccountLogic, id: string): boolean {
         return element.email === id;
     }
 }

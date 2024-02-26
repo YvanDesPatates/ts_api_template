@@ -1,8 +1,8 @@
 import {NextFunction, Request, Response} from "express";
-import {isInstanceOfModelinterface} from "./ModelInterface";
+import {isInstanceOfModelinterface} from "./LogicInterface";
 
 /**
- * This middleware is used to automatically parse the response body to displayable copy if it is a ModelInterface.
+ * This middleware is used to automatically parse the response body to displayable copy if it is a LogicInterface.
  */
 export const ParsingResponseBodyMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const originalJsonFunction = res.json;
@@ -19,7 +19,7 @@ export const ParsingResponseBodyMiddleware = (req: Request, res: Response, next:
 };
 
 /**
- * This function return displayable copy of the object if it is a ModelInterface implementation.
+ * This function return displayable copy of the object if it is a LogicInterface implementation.
  */
 function getDisplayableCopyIfInstanceOfModelInterface(object: object) {
     if (isInstanceOfModelinterface(object)) {
