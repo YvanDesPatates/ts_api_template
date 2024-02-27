@@ -3,6 +3,7 @@ import {DisplayableJsonError} from "../displayableErrors/DisplayableJsonError";
 import {LogicInterface} from "../LogicInterface";
 import {AccountJsonDAO} from "./accountJsonDAO";
 import {AccountDTO} from "./AccountDTO";
+import {AccountDBModel} from "./AccountDBModel";
 
 export class AccountLogic implements LogicInterface{
     private _email: string;
@@ -31,7 +32,11 @@ export class AccountLogic implements LogicInterface{
 
     //#region public methods
     public getDisplayableCopy(): AccountDTO{
-        return new AccountDTO(this);
+        return {
+            email: this.email,
+            name: this.name,
+            amount: this.amount
+        };
     }
 
     /**
@@ -40,7 +45,7 @@ export class AccountLogic implements LogicInterface{
     public create(): AccountLogic{
         assertAttributeExists(this._pwd, "pwd");
         this.assertEmailDoesNotExistsInDatabase(this._email);
-        return this._accountJsonDAO.create(this);
+        return this._accountJsonDAO.create(this.toDBModel()).toLogic();
     }
 
     /**
@@ -66,11 +71,11 @@ export class AccountLogic implements LogicInterface{
         AccountLogic.assertEmailExistsInDatabase(new AccountJsonDAO(), email);
         const account = new AccountJsonDAO().getById(email);
         if ( ! account){ throw new DisplayableJsonError(500, "Error when getting account"); }
-        return account;
+        return account.toLogic();
     }
 
     static getAll(): AccountLogic[] {
-        return new AccountJsonDAO().getAll();
+        return new AccountJsonDAO().getAll().map( accountDBModel => accountDBModel.toLogic());
     }
     //#endregion
 
@@ -85,6 +90,13 @@ export class AccountLogic implements LogicInterface{
         if ( ! accountDAO.idExists(email)){
             throw new DisplayableJsonError(404, "Account not found with the email " + email);
         }
+    }
+
+    private toDBModel(): AccountDBModel{
+        if (! this.pwd){
+            throw new Error("can't create an AccountDBModel without pwd field")
+        }
+        return new AccountDBModel(this.email, this.name, this.amount, this.pwd);
     }
     //#endregion
 

@@ -1,4 +1,6 @@
-export interface DAOInterface<T> {
+import {DBModelInterface} from "./DBModelInterface";
+
+export interface DAOInterface<T extends DBModelInterface> {
     getAll(): T[];
 
     getById(id: string): T | null
