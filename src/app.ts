@@ -27,3 +27,5 @@ app.use(errorHandlerMiddleware);
 app.listen(port, () => {
   console.log(`Express is listening at http://localhost:${port}`);
 });
+
+export default app;

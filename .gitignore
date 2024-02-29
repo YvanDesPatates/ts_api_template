@@ -6,5 +6,7 @@
 /dist/
 # data repository for local database
 /data/
+# test coverage results
+/coverage/
 # environnement variables
 .env
