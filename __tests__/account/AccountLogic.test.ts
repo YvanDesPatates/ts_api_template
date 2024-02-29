@@ -23,6 +23,11 @@ describe("AccountLogic.ts tests", () => {
             .toThrow(MissingAttributeError);
     });
 
+    test("create account without blank pwd is impossible", async () => {
+        expect(() => new AccountLogic("email", "name", 5, "").create())
+            .toThrow(DisplayableJsonError);
+    });
+
     test("create account with existing email is impossible", async () => {
         const idExistsMock = mockDaoIdExists(true);
         expect(() => new AccountLogic("email", "name", 5, "pwd").create())
