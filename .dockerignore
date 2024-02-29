@@ -1,6 +1,8 @@
 .dockerignore
 /doc/
 /dist/
+/coverage/
+/__tests__/
 # exclude data beceause it is already mapped with a volume
 /data/
 Dockerfile
@@ -9,3 +11,4 @@ docker-compose.yml
 README.md
 .env
 .env.exemple
+jest.config.js
