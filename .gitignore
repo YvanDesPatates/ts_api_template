@@ -10,3 +10,4 @@
 /coverage/
 # environnement variables
 .env
+.env.test

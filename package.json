@@ -4,11 +4,11 @@
   "description": "node JS API with TypeScript",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/app.ts",
+    "start": "dotenvx run --env-file=.env -- nodemon src/app.ts",
     "start_prod": "tsc && node dist/app.js",
     "lint": "eslint . --ext .ts",
     "build": "tsc",
-    "test": "jest --coverage"
+    "test": "dotenvx run --env-file=.env.test -- jest --coverage"
   },
   "author": "",
   "license": "ISC",
@@ -28,8 +28,8 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@dotenvx/dotenvx": "^0.26.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.1",
     "express": "^4.17.21"
   }
 }
