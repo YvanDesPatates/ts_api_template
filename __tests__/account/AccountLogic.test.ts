@@ -26,7 +26,8 @@ describe("AccountLogic.ts tests", () => {
     })
 
     test("create account without pwd is impossible", async () => {
-        expect(() => new AccountLogic("email", "name", 5).create())
+        await expect(async () => await new AccountLogic("email", "name", 5).create())
+            .rejects
             .toThrow(MissingAttributeError);
     });
 
