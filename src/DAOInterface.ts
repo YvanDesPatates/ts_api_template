@@ -1,13 +1,13 @@
 import {DBModelInterface} from "./DBModelInterface";
 
 export interface DAOInterface<T extends DBModelInterface> {
-    getAll(): T[];
+    getAll(): Promise<T[]>;
 
-    getById(id: string): T | null
+    getById(id: string): Promise<T | null>
 
-    create(newElement: T): T;
+    create(newElement: T): Promise<T>;
 
-    delete(id: string): boolean;
+    delete(id: string): Promise<boolean>;
 
-    idExists(id: string): boolean;
+    idExists(id: string): Promise<boolean>;
 }
