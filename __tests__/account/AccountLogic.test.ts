@@ -17,7 +17,7 @@ describe("AccountLogic.ts tests", () => {
     });
 
     test("create account with unused email", async () => {
-        const idExistsMock = mockDaoIdExists((id) => false);
+        const idExistsMock = mockDaoIdExists(async () => false);
         const accountToCreate = new AccountLogic("emaileeeee", "name", 5, "pwd");
         const createdAccount = accountToCreate.create();
         expect(createdAccount).toBeInstanceOf(AccountLogic);
@@ -44,7 +44,7 @@ describe("AccountLogic.ts tests", () => {
     });
 
     test("update account", async () => {
-        const idExistsMock = mockDaoIdExists(id => id === "email");
+        const idExistsMock = mockDaoIdExists(async id => id === "email");
         const updatedAccount = new AccountLogic("newEmail", "name", 5, "pwd").update("email");
         expect(updatedAccount).toBeInstanceOf(AccountLogic);
         expect(updatedAccount).toHaveProperty("email", "newEmail");
@@ -61,7 +61,7 @@ describe("AccountLogic.ts tests", () => {
     });
 
     test("update account without pwd is impossible", async () => {
-        const idExistsMock = mockDaoIdExists(id => id === "email");
+        const idExistsMock = mockDaoIdExists(async id => id === "email");
         expect(() => new AccountLogic("newEmail", "name", 5).update("email"))
             .toThrow(MissingAttributeError);
 
@@ -76,7 +76,7 @@ describe("AccountLogic.ts tests", () => {
     });
 
     test("delete account with non existing email throw 404 error", async () => {
-        const idExistsMock = mockDaoIdExists(id => false);
+        const idExistsMock = mockDaoIdExists(async () => false);
         expect(() => new AccountLogic("newEmail", "name", 5, "pwd").delete())
             .toThrow(DisplayableJsonError);
 
@@ -90,7 +90,7 @@ describe("AccountLogic.ts tests", () => {
  * Mock the idExists method of AccountJsonDAO
  * @param mockFunction is the return value the mocked function will return, by default it returns true
  */
-function mockDaoIdExists(mockFunction: (id: string) => boolean = (id) => true) {
+function mockDaoIdExists(mockFunction: (id: string) => Promise<boolean> = async () => true) {
     return jest
         .spyOn(AccountJsonDAO.prototype, 'idExists')
         .mockImplementation(mockFunction);
@@ -99,16 +99,12 @@ function mockDaoIdExists(mockFunction: (id: string) => boolean = (id) => true) {
 function mockDaocreate() {
     return jest
         .spyOn(AccountJsonDAO.prototype, 'create')
-        .mockImplementation((account) => {
-            return account;
-        });
+        .mockImplementation(async (account) => account);
 }
 
 function mockDaoDelete(returnValue: boolean = true) {
     return jest
         .spyOn(AccountJsonDAO.prototype, 'delete')
-        .mockImplementation(() => {
-            return returnValue;
-        });
+        .mockImplementation(async () =>  returnValue);
 }
 //#endregion
