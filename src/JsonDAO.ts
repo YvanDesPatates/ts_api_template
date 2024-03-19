@@ -23,7 +23,7 @@ export abstract class JsonDAO<T extends DBModelInterface> implements DAOInterfac
     protected abstract parseAnyFromDB(objectToParse: any): T;
 
     //#region public methods
-    public getAll(): T[] {
+    public async getAll(): Promise<T[]> {
         try {
             const result =  fs.readFileSync(this.getFilePath(), 'utf8');
             return JSON.parse(result).map( (jsonObject: any) => this.parseAnyFromDB(jsonObject) );
@@ -35,20 +35,20 @@ export abstract class JsonDAO<T extends DBModelInterface> implements DAOInterfac
         }
     }
 
-    public getById(id: string): T | null{
-        return this.searchElementThrowExceptionIfNotFound(this.getAll(), id);
+    public async getById(id: string): Promise<T | null>{
+        return this.searchElementThrowExceptionIfNotFound(await this.getAll(), id);
     }
 
-    public create(newElement: T): T {
-        let elements = this.getAll();
+    public async create(newElement: T): Promise<T> {
+        let elements = await this.getAll();
         elements.push(newElement);
         fs.writeFileSync(this.getFilePath(), JSON.stringify(elements));
         return newElement;
     }
 
-    public delete(id: string): boolean {
-        let elements = this.getAll();
-        const element = this.searchElementThrowExceptionIfNotFound(elements, id);
+    public async delete(id: string): Promise<boolean> {
+        let elements = await this.getAll();
+        const element = await this.searchElementThrowExceptionIfNotFound(elements, id);
         if (!element){ return false; }
 
         const indexToDelete = elements.indexOf(element);
@@ -57,8 +57,8 @@ export abstract class JsonDAO<T extends DBModelInterface> implements DAOInterfac
         return true;
     }
 
-    public idExists(id: string): boolean {
-        const elements = this.getAll();
+    public async idExists(id: string): Promise<boolean> {
+        const elements = await this.getAll();
         return elements.some((element) => {return this.compareElementToId(element, id)});
     }
     //#endregion
