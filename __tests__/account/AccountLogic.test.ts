@@ -19,7 +19,7 @@ describe("AccountLogic.ts tests", () => {
     test("create account with unused email", async () => {
         const idExistsMock = mockDaoIdExists(async () => false);
         const accountToCreate = new AccountLogic("emaileeeee", "name", 5, "pwd");
-        const createdAccount = accountToCreate.create();
+        const createdAccount = await accountToCreate.create();
         expect(createdAccount).toBeInstanceOf(AccountLogic);
 
         idExistsMock.mockReset();
@@ -32,13 +32,15 @@ describe("AccountLogic.ts tests", () => {
     });
 
     test("create account with blank pwd is impossible", async () => {
-        expect(() => new AccountLogic("email", "name", 5, "").create())
+        await expect(async () => await new AccountLogic("email", "name", 5, "").create())
+            .rejects
             .toThrow(DisplayableJsonError);
     });
 
     test("create account with existing email is impossible", async () => {
         const idExistsMock = mockDaoIdExists();
-        expect(() => new AccountLogic("email", "name", 5, "pwd").create())
+        await expect(async () => await new AccountLogic("email", "name", 5, "pwd").create())
+            .rejects
             .toThrow(DisplayableJsonError);
 
         idExistsMock.mockReset();
@@ -46,7 +48,7 @@ describe("AccountLogic.ts tests", () => {
 
     test("update account", async () => {
         const idExistsMock = mockDaoIdExists(async id => id === "email");
-        const updatedAccount = new AccountLogic("newEmail", "name", 5, "pwd").update("email");
+        const updatedAccount = await new AccountLogic("newEmail", "name", 5, "pwd").update("email");
         expect(updatedAccount).toBeInstanceOf(AccountLogic);
         expect(updatedAccount).toHaveProperty("email", "newEmail");
 
@@ -55,7 +57,8 @@ describe("AccountLogic.ts tests", () => {
 
     test("update account with existing email is impossible", async () => {
         const idExistsMock = mockDaoIdExists();
-        expect(() => new AccountLogic("newEmail", "name", 5, "pwd").update("email"))
+        await expect(async () => await new AccountLogic("newEmail", "name", 5, "pwd").update("email"))
+            .rejects
             .toThrow(DisplayableJsonError);
 
         idExistsMock.mockReset();
@@ -63,7 +66,8 @@ describe("AccountLogic.ts tests", () => {
 
     test("update account without pwd is impossible", async () => {
         const idExistsMock = mockDaoIdExists(async id => id === "email");
-        expect(() => new AccountLogic("newEmail", "name", 5).update("email"))
+        await expect(async () => await new AccountLogic("newEmail", "name", 5).update("email"))
+            .rejects
             .toThrow(MissingAttributeError);
 
         idExistsMock.mockReset();
@@ -78,7 +82,8 @@ describe("AccountLogic.ts tests", () => {
 
     test("delete account with non existing email throw 404 error", async () => {
         const idExistsMock = mockDaoIdExists(async () => false);
-        expect(() => new AccountLogic("newEmail", "name", 5, "pwd").delete())
+        await expect(async () => await new AccountLogic("newEmail", "name", 5, "pwd").delete())
+            .rejects
             .toThrow(DisplayableJsonError);
 
         idExistsMock.mockReset();
