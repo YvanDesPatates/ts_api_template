@@ -1,7 +1,8 @@
 import {JsonDAO} from "../../JsonDAO";
 import {AccountDBModel} from "./AccountDBModel";
+import AccountDaoInterface from "./AccountDaoInterface";
 
-export class AccountJsonDAO extends JsonDAO<AccountDBModel> {
+export class AccountJsonDAO extends JsonDAO<AccountDBModel> implements AccountDaoInterface {
     getFileName(): string {
         return "accounts.json";
     }

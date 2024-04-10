@@ -4,7 +4,7 @@ import {LogicInterface} from "../LogicInterface";
 import {AccountJsonDAO} from "./DAL/accountJsonDAO";
 import {AccountDTO} from "./AccountDTO";
 import {AccountDBModel} from "./DAL/AccountDBModel";
-import {DAOInterface} from "../DAOInterface";
+import AccountDaoInterface from "./DAL/AccountDaoInterface";
 
 export class AccountLogic implements LogicInterface {
     private _email: string;
@@ -12,7 +12,7 @@ export class AccountLogic implements LogicInterface {
     private _amount: number;
     private _pwd?: string;
 
-    private _accountJsonDAO: DAOInterface<AccountDBModel> = new AccountJsonDAO();
+    private _accountJsonDAO: AccountDaoInterface = new AccountJsonDAO();
 
 
     public constructor(uniqueEmail: string, name: string, amount: number, pwd?: string) {
@@ -89,7 +89,7 @@ export class AccountLogic implements LogicInterface {
         }
     }
 
-    private static async assertEmailExistsInDatabase(accountDAO: DAOInterface<AccountDBModel>, email: string): Promise<void> {
+    private static async assertEmailExistsInDatabase(accountDAO: AccountDaoInterface, email: string): Promise<void> {
         if (! await accountDAO.idExists(email)) {
             throw new DisplayableJsonError(404, "Account not found with the email " + email);
         }
