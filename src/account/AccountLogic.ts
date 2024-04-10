@@ -1,10 +1,9 @@
 import {assertAttributeExists, assertAttributeType_number} from "../util/attribute_assertions";
 import {DisplayableJsonError} from "../displayableErrors/DisplayableJsonError";
 import {LogicInterface} from "../LogicInterface";
-import {AccountJsonDAO} from "./DAL/accountJsonDAO";
 import {AccountDTO} from "./AccountDTO";
 import {AccountDBModel} from "./DAL/AccountDBModel";
-import AccountDaoInterface from "./DAL/AccountDaoInterface";
+import AccountDaoInterface, {getAccountDAO} from "./DAL/AccountDaoInterface";
 
 export class AccountLogic implements LogicInterface {
     private _email: string;
@@ -12,7 +11,7 @@ export class AccountLogic implements LogicInterface {
     private _amount: number;
     private _pwd?: string;
 
-    private _accountJsonDAO: AccountDaoInterface = new AccountJsonDAO();
+    private _accountJsonDAO: AccountDaoInterface = getAccountDAO();
 
 
     public constructor(uniqueEmail: string, name: string, amount: number, pwd?: string) {
@@ -70,14 +69,14 @@ export class AccountLogic implements LogicInterface {
 
     //#region static methods
     public static async getAccount(email: string): Promise<AccountLogic> {
-        await AccountLogic.assertEmailExistsInDatabase(new AccountJsonDAO(), email);
-        const account = await new AccountJsonDAO().getById(email);
+        await AccountLogic.assertEmailExistsInDatabase(getAccountDAO(), email);
+        const account = await getAccountDAO().getById(email);
         if ( ! account){ throw new DisplayableJsonError(500, "Error when getting account"); }
         return account.toLogic();
     }
 
     static async getAll(): Promise<AccountLogic[]> {
-        const accounts = await new AccountJsonDAO().getAll();
+        const accounts = await getAccountDAO().getAll();
         return await Promise.all(accounts.map(async account => account.toLogic()));
     }
     //#endregion
