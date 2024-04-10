@@ -1,6 +1,6 @@
-import {DBModelInterface} from "../DBModelInterface";
-import {AccountLogic} from "./AccountLogic";
-import {DisplayableJsonError} from "../displayableErrors/DisplayableJsonError";
+import {DBModelInterface} from "../../DBModelInterface";
+import {AccountLogic} from "../AccountLogic";
+import {DisplayableJsonError} from "../../displayableErrors/DisplayableJsonError";
 
 export class AccountDBModel implements DBModelInterface{
     email?: string;

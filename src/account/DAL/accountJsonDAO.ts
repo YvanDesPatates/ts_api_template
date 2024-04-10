@@ -1,4 +1,4 @@
-import {JsonDAO} from "../JsonDAO";
+import {JsonDAO} from "../../JsonDAO";
 import {AccountDBModel} from "./AccountDBModel";
 
 export class AccountJsonDAO extends JsonDAO<AccountDBModel> {

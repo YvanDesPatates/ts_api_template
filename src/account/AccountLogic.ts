@@ -1,9 +1,9 @@
 import {assertAttributeExists, assertAttributeType_number} from "../util/attribute_assertions";
 import {DisplayableJsonError} from "../displayableErrors/DisplayableJsonError";
 import {LogicInterface} from "../LogicInterface";
-import {AccountJsonDAO} from "./accountJsonDAO";
+import {AccountJsonDAO} from "./DAL/accountJsonDAO";
 import {AccountDTO} from "./AccountDTO";
-import {AccountDBModel} from "./AccountDBModel";
+import {AccountDBModel} from "./DAL/AccountDBModel";
 import {DAOInterface} from "../DAOInterface";
 
 export class AccountLogic implements LogicInterface {

@@ -1,6 +1,6 @@
 import {AccountLogic} from "../../src/account/AccountLogic";
 import {DisplayableJsonError} from "../../src/displayableErrors/DisplayableJsonError";
-import {AccountJsonDAO} from "../../src/account/accountJsonDAO";
+import {AccountJsonDAO} from "../../src/account/DAL/accountJsonDAO";
 import {MissingAttributeError} from "../../src/displayableErrors/MissingAttributeError";
 
 let mockFunctions: Array<jest.SpyInstance> = []
