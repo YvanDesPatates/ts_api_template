@@ -1,6 +1,6 @@
 import {AccountLogic} from "../../src/account/AccountLogic";
 import {DisplayableJsonError} from "../../src/displayableErrors/DisplayableJsonError";
-import {AccountJsonDAO} from "../../src/account/DAL/accountJsonDAO";
+import {AccountJsonDAO} from "../../src/account/DAL/AccountJsonDAO";
 import {MissingAttributeError} from "../../src/displayableErrors/MissingAttributeError";
 import {AccountMongoDAO} from "../../src/account/DAL/AccountMongoDAO";
 
