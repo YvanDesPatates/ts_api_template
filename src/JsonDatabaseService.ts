@@ -1,26 +1,26 @@
 import * as fs from "fs";
 import {DisplayableJsonError} from "./displayableErrors/DisplayableJsonError";
-import {DAOInterface} from "./DAOInterface";
 import {DBModelInterface} from "./DBModelInterface";
 
-export abstract class JsonDAO<T extends DBModelInterface> implements DAOInterface<T>{
-    private commonPath: string = "data/";
+export class JsonDatabaseService<T extends DBModelInterface>{
+    private readonly commonPath: string = "data/";
+    private readonly fileName: string;
+
+    private readonly compareElementToId: CallbackFunctionCompareElementToId<T>
+    private readonly parseAnyFromDB: CallbackFunctionParseAnyFromDB<T>
 
     //create file and data repository if not exists
-    public constructor() {
+    public constructor(fileName: string, callbackFunctionCompareElementToId: CallbackFunctionCompareElementToId<T>, callbackFunctionParseAnyFromDB: CallbackFunctionParseAnyFromDB<T>) {
         if (!fs.existsSync(this.commonPath)){
             fs.mkdirSync(this.commonPath);
         }
         if (!fs.existsSync(this.getFilePath())){
             fs.writeFileSync(this.getFilePath(), JSON.stringify([]));
         }
+        this.fileName = fileName;
+        this.compareElementToId = callbackFunctionCompareElementToId;
+        this.parseAnyFromDB = callbackFunctionParseAnyFromDB;
     }
-
-    protected abstract getFileName(): string;
-
-    protected abstract compareElementToId(element: T, id: string): boolean;
-
-    protected abstract parseAnyFromDB(objectToParse: any): T;
 
     //#region public methods
     public async getAll(): Promise<T[]> {
@@ -65,7 +65,7 @@ export abstract class JsonDAO<T extends DBModelInterface> implements DAOInterfac
 
     //#region private methods
     private getFilePath(): string {
-        return this.commonPath + this.getFileName();
+        return this.commonPath + this.fileName;
     }
 
     private searchElementThrowExceptionIfNotFound(elements: T[], id: string): T | null{
@@ -75,6 +75,12 @@ export abstract class JsonDAO<T extends DBModelInterface> implements DAOInterfac
     }
     //#endregion
 
+}
 
+interface CallbackFunctionCompareElementToId<T> {
+    (element: T, id: string): boolean;
+}
 
+interface CallbackFunctionParseAnyFromDB<T> {
+    (objectToParse: any): T;
 }
