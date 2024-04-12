@@ -3,7 +3,7 @@ import {DisplayableJsonError} from "../../src/displayableErrors/DisplayableJsonE
 import {AccountJsonDAO} from "../../src/account/DAL/accountJsonDAO";
 import {MissingAttributeError} from "../../src/displayableErrors/MissingAttributeError";
 
-let mockFunctions: Array<jest.SpyInstance> = []
+const mockFunctions: Array<jest.SpyInstance> = [];
 
 describe("AccountLogic.ts tests", () => {
     beforeAll(() => {
@@ -23,7 +23,7 @@ describe("AccountLogic.ts tests", () => {
         expect(createdAccount).toBeInstanceOf(AccountLogic);
 
         idExistsMock.mockReset();
-    })
+    });
 
     test("create account without pwd is impossible", async () => {
         await expect(async () => await new AccountLogic("email", "name", 5).create())

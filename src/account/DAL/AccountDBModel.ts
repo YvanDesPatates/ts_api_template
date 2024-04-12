@@ -17,7 +17,7 @@ export class AccountDBModel implements DBModelInterface{
 
     toLogic(): AccountLogic {
         if (!this.email || !this.name || !this.amount){
-            throw new DisplayableJsonError(500, "impossible to parse data to AccountDBModel : missing required attributes.")
+            throw new DisplayableJsonError(500, "impossible to parse data to AccountDBModel : missing required attributes.");
         }
         return new AccountLogic(this.email, this.name, this.amount, this.pwd);
     }

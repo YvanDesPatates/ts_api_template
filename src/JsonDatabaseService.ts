@@ -6,8 +6,8 @@ export class JsonDatabaseService<T extends DBModelInterface>{
     private readonly commonPath: string = "data/";
     private readonly fileName: string;
 
-    private readonly compareElementToId: CallbackFunctionCompareElementToId<T>
-    private readonly parseAnyFromDB: CallbackFunctionParseAnyFromDB<T>
+    private readonly compareElementToId: CallbackFunctionCompareElementToId<T>;
+    private readonly parseAnyFromDB: CallbackFunctionParseAnyFromDB<T>;
 
     //create file and data repository if not exists
     public constructor(fileName: string, callbackFunctionCompareElementToId: CallbackFunctionCompareElementToId<T>, callbackFunctionParseAnyFromDB: CallbackFunctionParseAnyFromDB<T>) {
@@ -40,14 +40,14 @@ export class JsonDatabaseService<T extends DBModelInterface>{
     }
 
     public async create(newElement: T): Promise<T> {
-        let elements = await this.getAll();
+        const elements = await this.getAll();
         elements.push(newElement);
         fs.writeFileSync(this.getFilePath(), JSON.stringify(elements));
         return newElement;
     }
 
     public async delete(id: string): Promise<boolean> {
-        let elements = await this.getAll();
+        const elements = await this.getAll();
         const element = await this.searchElementThrowExceptionIfNotFound(elements, id);
         if (!element){ return false; }
 
@@ -59,7 +59,7 @@ export class JsonDatabaseService<T extends DBModelInterface>{
 
     public async idExists(id: string): Promise<boolean> {
         const elements = await this.getAll();
-        return elements.some((element) => {return this.compareElementToId(element, id)});
+        return elements.some((element) => this.compareElementToId(element, id) );
     }
     //#endregion
 
@@ -69,7 +69,7 @@ export class JsonDatabaseService<T extends DBModelInterface>{
     }
 
     private searchElementThrowExceptionIfNotFound(elements: T[], id: string): T | null{
-        const element = elements.find((element) => {return this.compareElementToId(element, id)});
+        const element = elements.find((element) => this.compareElementToId(element, id) );
         if (!element){ return null; }
         return element;
     }

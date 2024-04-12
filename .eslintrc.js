@@ -29,7 +29,8 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
-        semi: 2, // Disallows semicolons at the ends of statements
+        "semi": "off", //to avoid conflict with @typescript-eslint rule
+        "@typescript-eslint/semi": ["error", "always"],
         camelcase: 1, // Warning for camel case naming convention
         "arrow-body-style": 2, // Enforces consistent style for arrow functions
         "prefer-const": 2, // Recommends use of const over let

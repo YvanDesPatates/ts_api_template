@@ -96,7 +96,7 @@ export class AccountLogic implements LogicInterface {
 
     private toDBModel(): AccountDBModel {
         if (!this.pwd) {
-            throw new Error("can't create an AccountDBModel without pwd field")
+            throw new Error("can't create an AccountDBModel without pwd field");
         }
         return new AccountDBModel(this.email, this.name, this.amount, this.pwd);
     }

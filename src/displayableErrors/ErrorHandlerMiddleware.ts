@@ -1,7 +1,7 @@
-import {NextFunction, Request, Response} from "express";
+import {Request, Response} from "express";
 import {DisplayableJsonError} from "./DisplayableJsonError";
 
-export const errorHandlerMiddleware = (err: Error, req: Request, res: Response, next: NextFunction) => {
+export const errorHandlerMiddleware = (err: Error, req: Request, res: Response) => {
     console.error(err);
 
     if (err instanceof DisplayableJsonError){
