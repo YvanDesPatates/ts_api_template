@@ -1,11 +1,11 @@
 import {DAOInterface} from "../../DAOInterface";
 import {AccountDBModel} from "./AccountDBModel";
-import {AccountJsonDAO} from "./accountJsonDAO";
+import {AccountMongoDAO} from "./AccountMongoDAO";
 
 export default interface AccountDaoInterface extends DAOInterface<AccountDBModel>{
 
 }
 
 export function getAccountDAO(): AccountDaoInterface{
-    return new AccountJsonDAO();
+    return new AccountMongoDAO();
 }
