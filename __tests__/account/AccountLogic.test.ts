@@ -12,7 +12,7 @@ describe("AccountLogic.ts tests", () => {
         mockFunctions.push(mockDaoJsoncreate());
         mockFunctions.push(mockDaoJsonDelete());
         mockFunctions.push(mockDaoMongocreate());
-        mockFunctions.push(mockDaoMongoDelete())
+        mockFunctions.push(mockDaoMongoDelete());
     });
 
     afterAll(() => {
@@ -108,7 +108,7 @@ function mockDAOsIdExists(mockFunction: (id: string) => Promise<boolean> = async
         jest
             .spyOn(AccountMongoDAO.prototype, 'idExists')
             .mockImplementation(mockFunction)
-    ]
+    ];
 }
 
 function mockDaoJsoncreate() {

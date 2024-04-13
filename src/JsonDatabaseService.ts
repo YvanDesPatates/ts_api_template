@@ -3,7 +3,7 @@ import {DisplayableJsonError} from "./displayableErrors/DisplayableJsonError";
 import {DBModelInterface} from "./DBModelInterface";
 
 export class JsonDatabaseService<T extends DBModelInterface>{
-    private readonly commonPath: string = "data/";
+    private readonly commonPath: string;
     private readonly fileName: string;
 
     private readonly compareElementToId: CallbackFunctionCompareElementToId<T>;
@@ -11,15 +11,21 @@ export class JsonDatabaseService<T extends DBModelInterface>{
 
     //create file and data repository if not exists
     public constructor(fileName: string, callbackFunctionCompareElementToId: CallbackFunctionCompareElementToId<T>, callbackFunctionParseAnyFromDB: CallbackFunctionParseAnyFromDB<T>) {
+        this.fileName = fileName;
+        this.compareElementToId = callbackFunctionCompareElementToId;
+        this.parseAnyFromDB = callbackFunctionParseAnyFromDB;
+
+        if ( !process.env.JSON_DATA_BASE_PATH){
+            throw new DisplayableJsonError(500, "JSON_DATA_BASE_PATH variable environment is missing");
+        }
+        this.commonPath = process.env.JSON_DATA_BASE_PATH;
+
         if (!fs.existsSync(this.commonPath)){
             fs.mkdirSync(this.commonPath);
         }
         if (!fs.existsSync(this.getFilePath())){
             fs.writeFileSync(this.getFilePath(), JSON.stringify([]));
         }
-        this.fileName = fileName;
-        this.compareElementToId = callbackFunctionCompareElementToId;
-        this.parseAnyFromDB = callbackFunctionParseAnyFromDB;
     }
 
     //#region public methods

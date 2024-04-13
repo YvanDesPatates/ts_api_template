@@ -4,8 +4,8 @@
 /.idea/
 # output files for production, transpiled ts files
 /dist/
-# data repository for local database
-/data/
+# data repository for local database, depend on the configuration
+*data*
 # test coverage results
 /coverage/
 # environnement variables
