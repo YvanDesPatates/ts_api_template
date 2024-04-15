@@ -22,7 +22,7 @@ export class AccountJsonDAO implements AccountDaoInterface {
         return this.jsonDatabaseService.getAll();
     }
 
-    public async getById(id: string): Promise<AccountDBModel | null> {
+    public async getById(id: string): Promise<AccountDBModel> {
         return this.jsonDatabaseService.getById(id);
     }
 

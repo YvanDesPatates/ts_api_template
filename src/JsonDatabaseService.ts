@@ -41,8 +41,12 @@ export class JsonDatabaseService<T extends DBModelInterface>{
         }
     }
 
-    public async getById(id: string): Promise<T | null>{
-        return this.searchElementThrowExceptionIfNotFound(await this.getAll(), id);
+    public async getById(id: string): Promise<T>{
+        const element = this.searchElementThrowExceptionIfNotFound(await this.getAll(), id);
+        if (!element){
+            throw new DisplayableJsonError(500, "resource not found in database with id : "+id);
+        }
+        return element
     }
 
     public async create(newElement: T): Promise<T> {

@@ -1,4 +1,5 @@
 import {assertAttributeExists, assertAttributeType_number} from "../util/attribute_assertions";
+import bcrypt from 'bcrypt';
 import {DisplayableJsonError} from "../displayableErrors/DisplayableJsonError";
 import {LogicInterface} from "../LogicInterface";
 import {AccountDTO} from "./AccountDTO";
@@ -12,7 +13,7 @@ export class AccountLogic implements LogicInterface {
     private _pwd?: string;
 
     private _accountJsonDAO: AccountDaoInterface = getAccountDAO();
-
+    private readonly _saltRounds: number = 10;
 
     public constructor(uniqueEmail: string, name: string, amount: number, pwd?: string) {
         assertAttributeExists(uniqueEmail, "email");
@@ -44,6 +45,7 @@ export class AccountLogic implements LogicInterface {
      */
     public async create(): Promise<AccountLogic> {
         assertAttributeExists(this._pwd, "pwd");
+        this._pwd = await bcrypt.hash(<string>this.pwd, this._saltRounds);
         await this.assertEmailDoesNotExistsInDatabase(this._email);
         const createdAccount = await this._accountJsonDAO.create(this.toDBModel());
         return createdAccount.toLogic();
@@ -55,6 +57,9 @@ export class AccountLogic implements LogicInterface {
      */
     public async update(actualEmail: string): Promise<AccountLogic> {
         await AccountLogic.assertEmailExistsInDatabase(this._accountJsonDAO, actualEmail);
+        const accountToUpdate = await this._accountJsonDAO.getById(actualEmail)
+        //if the password change we have to encrypt it
+        accountToUpdate.pwd = this.pwd === accountToUpdate.pwd ? this.pwd : await bcrypt.hash(<string>this.pwd, this._saltRounds);
         await this._accountJsonDAO.delete(actualEmail);
         return this.create();
     }
@@ -71,7 +76,6 @@ export class AccountLogic implements LogicInterface {
     public static async getAccount(email: string): Promise<AccountLogic> {
         await AccountLogic.assertEmailExistsInDatabase(getAccountDAO(), email);
         const account = await getAccountDAO().getById(email);
-        if ( ! account){ throw new DisplayableJsonError(500, "Error when getting account"); }
         return account.toLogic();
     }
 
