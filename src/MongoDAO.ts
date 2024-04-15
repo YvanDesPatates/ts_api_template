@@ -50,7 +50,7 @@ export abstract class MongoDAO<T extends DBModelInterface> implements DAOInterfa
         const collection = await this.getCollection();
         const result = await collection.updateOne(this.getIdFilter(id), { $set: updated });
         if (!result){
-            throw new DisplayableJsonError(304, `resource with id ${id} has not been updated`)
+            throw new DisplayableJsonError(304, `resource with id ${id} has not been updated`);
         }
         return updated;
     }

@@ -46,7 +46,7 @@ export class JsonDatabaseService<T extends DBModelInterface>{
         if (!element){
             throw new DisplayableJsonError(500, "resource not found in database with id : "+id);
         }
-        return element
+        return element;
     }
 
     public async create(newElement: T): Promise<T> {
