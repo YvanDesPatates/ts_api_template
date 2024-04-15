@@ -57,11 +57,16 @@ export class AccountLogic implements LogicInterface {
      */
     public async update(actualEmail: string): Promise<AccountLogic> {
         await AccountLogic.assertEmailExistsInDatabase(this._accountJsonDAO, actualEmail);
-        const accountToUpdate = await this._accountJsonDAO.getById(actualEmail)
+        assertAttributeExists(this._pwd, "pwd");
+
+        const accountToUpdate = await this._accountJsonDAO.getById(actualEmail);
+        if (actualEmail !== this.email){
+            await this.assertEmailDoesNotExistsInDatabase(this._email);
+        }
         //if the password change we have to encrypt it
         accountToUpdate.pwd = this.pwd === accountToUpdate.pwd ? this.pwd : await bcrypt.hash(<string>this.pwd, this._saltRounds);
-        await this._accountJsonDAO.delete(actualEmail);
-        return this.create();
+        const updatedAccount = await this._accountJsonDAO.update(actualEmail, this.toDBModel());
+        return updatedAccount.toLogic();
     }
 
     public async delete(): Promise<void> {

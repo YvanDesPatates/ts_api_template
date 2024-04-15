@@ -7,6 +7,8 @@ export interface DAOInterface<T extends DBModelInterface> {
 
     create(newElement: T): Promise<T>;
 
+    update(id: string, updated: T): Promise<T>
+
     delete(id: string): Promise<boolean>;
 
     idExists(id: string): Promise<boolean>;

@@ -19,7 +19,7 @@ export abstract class MongoDAO<T extends DBModelInterface> implements DAOInterfa
         }
     }
 
-    async connect(): Promise<void> {
+    public async connect(): Promise<void> {
         if (!MongoDAO.client){
             throw new DisplayableJsonError(500, "mongo cliente should be instanciated to connect");
         }
@@ -34,7 +34,7 @@ export abstract class MongoDAO<T extends DBModelInterface> implements DAOInterfa
         return;
     }
 
-    async create(newElement: T): Promise<T> {
+    public async create(newElement: T): Promise<T> {
         await this.connect();
         const collection = await this.getCollection();
         const resultId = await collection.insertOne(newElement);
@@ -44,6 +44,15 @@ export abstract class MongoDAO<T extends DBModelInterface> implements DAOInterfa
             throw new DisplayableJsonError(500, "error while creating element. Element may be not inserted");
         }
         return result;
+    }
+
+    public async update(id: string, updated: T): Promise<T>{
+        const collection = await this.getCollection();
+        const result = await collection.updateOne(this.getIdFilter(id), { $set: updated });
+        if (!result){
+            throw new DisplayableJsonError(304, `resource with id ${id} has not been updated`)
+        }
+        return updated;
     }
 
     public async delete(id: string): Promise<boolean> {
