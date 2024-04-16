@@ -14,6 +14,11 @@ export class AccountJsonDAO implements AccountDaoInterface {
         return this.jsonDatabaseService.create(newElement);
     }
 
+    public async update(id:string, updated:AccountDBModel): Promise<AccountDBModel> {
+        await this.delete(id);
+        return await this.create(updated);
+    }
+
     public async delete(id: string): Promise<boolean> {
         return this.jsonDatabaseService.delete(id);
     }
